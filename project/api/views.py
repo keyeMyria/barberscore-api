@@ -761,9 +761,9 @@ class RepertoryViewSet(viewsets.ModelViewSet):
     resource_name = "repertory"
 
     @action(methods=['post'], detail=True)
-    def activate(self, request, pk=None, **kwargs):
+    def clear(self, request, pk=None, **kwargs):
         object = self.get_object()
-        object.activate(by=self.request.user)
+        object.clear(by=self.request.user)
         object.save()
         serializer = self.get_serializer(object)
         return Response(serializer.data)

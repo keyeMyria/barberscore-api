@@ -28,14 +28,14 @@ class Repertory(TimeStampedModel):
 
     STATUS = Choices(
         (-10, 'inactive', 'Inactive',),
-        (0, 'new', 'New'),
-        (10, 'active', 'Active'),
+        (0, 'pending', 'Pending'),
+        (10, 'cleared', 'Cleared'),
     )
 
     status = FSMIntegerField(
         help_text="""DO NOT CHANGE MANUALLY unless correcting a mistake.  Use the buttons to change state.""",
         choices=STATUS,
-        default=STATUS.active,
+        default=STATUS.pending,
     )
 
     # FKs
@@ -104,9 +104,9 @@ class Repertory(TimeStampedModel):
 
     # Transitions
     @fsm_log_by
-    @transition(field=status, source='*', target=STATUS.active)
-    def activate(self, *args, **kwargs):
-        """Activate the Repertory."""
+    @transition(field=status, source='*', target=STATUS.cleared)
+    def clear(self, *args, **kwargs):
+        """Clear the Chart into the Repertory."""
         return
 
     @fsm_log_by
